@@ -32,7 +32,6 @@ parser.add_argument('--output-path', required=True,
                     help='what filepath to store the created JSON in')
 
 args = vars(parser.parse_args())
-print args
 
 lines = os.popen('dpkg -l | grep "^ii"').read().split('\n')
 i = 0
@@ -48,7 +47,6 @@ for line in lines:
         else:
             parsed.append(line[offsets[i]:offsets[i + 1]].strip())
 
-    print len(parsed)
     if len(parsed[1]) > 0:
         pkgs.update({parsed[1]:{'State':parsed[0], 'Version':parsed[2], 'Architecture':parsed[3],'Description':parsed[4]}})
 
