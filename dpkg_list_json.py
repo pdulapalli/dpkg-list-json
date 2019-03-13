@@ -28,8 +28,7 @@ import sys
 import argparse
 
 parser = argparse.ArgumentParser(description='Write installed package list from dpkg to the JSON format')
-parser.add_argument('--output-path', required=True,
-                    help='what filepath to store the created JSON in')
+parser.add_argument('--output-path', help='what filepath to store the created JSON in')
 
 args = vars(parser.parse_args())
 
@@ -50,6 +49,17 @@ for line in lines:
     if len(parsed[1]) > 0:
         pkgs.update({parsed[1]:{'State':parsed[0], 'Version':parsed[2], 'Architecture':parsed[3],'Description':parsed[4]}})
 
-text_file = open(args["output_path"], "w")
-text_file.write("%s" % json.dumps(pkgs))
-text_file.close()
+json_output = json.dumps(pkgs)
+
+# Print results to stdout
+print json_output
+
+# Checks for output_path before writing JSON to it
+if (args["output_path"] is not None) and (type(args["output_path"]) is str) and (len(args["output_path"]) > 0):
+    text_file = open(args["output_path"], "w")
+    text_file.write("%s" % json_output)
+    text_file.close()
+else:
+    sys.stderr.write('Output path was not supplied, was not a string, or was not empty. Skipping file write.\n')
+
+sys.exit(0)
