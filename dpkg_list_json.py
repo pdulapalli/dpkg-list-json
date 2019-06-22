@@ -25,12 +25,6 @@
 import os
 import json
 import sys
-import argparse
-
-parser = argparse.ArgumentParser(description='Write installed package list from dpkg to the JSON format')
-parser.add_argument('--output-path', help='what filepath to store the created JSON in')
-
-args = vars(parser.parse_args())
 
 lines = os.popen('dpkg -l | grep "^ii"').read().split('\n')
 i = 0
@@ -52,14 +46,5 @@ for line in lines:
 json_output = json.dumps(pkgs)
 
 # Print results to stdout
-print json_output
-
-# Checks for output_path before writing JSON to it
-if (args["output_path"] is not None) and (type(args["output_path"]) is str) and (len(args["output_path"]) > 0):
-    text_file = open(args["output_path"], "w")
-    text_file.write("%s" % json_output)
-    text_file.close()
-else:
-    sys.stderr.write('Output path was not supplied, was not a string, or was not empty. Skipping file write.\n')
-
+print(json_output)
 sys.exit(0)
