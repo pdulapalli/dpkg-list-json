@@ -3,7 +3,7 @@ Produces a JSON output form of the installed Debian packages list
 
 ## Requirements:
 
-* Python 2.7+ or Python 3.6+
+* Python 3.6+
 * An Ubuntu or Debian distribution of Linux
 
 ## Usage
