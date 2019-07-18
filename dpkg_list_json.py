@@ -30,7 +30,7 @@ def main():
     lines = os.popen('dpkg -l | grep "^ii"').read().split('\n')
     i = 0
     while len([l for l in lines[i].split('  ') if l]) != 5:
-    i += 1
+        i += 1
     offsets = [lines[i].index(l) for l in lines[i].split('  ') if len(l)]
     pkgs = {}
     for line in lines:
