@@ -22,27 +22,33 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
 import json
 import sys
+import subprocess
+import re
+
+def safe_str(obj):
+    try: return str(obj)
+    except UnicodeEncodeError:
+        return obj.encode('ascii', 'ignore').decode('ascii')
+    return ""
 
 def main():
-    lines = os.popen('dpkg -l | grep "^ii"').read().split('\n')
+    ps = subprocess.Popen(('dpkg', '-l'), stdout=subprocess.PIPE)
+    output = subprocess.check_output(('grep', '^ii'), stdin=ps.stdout)
+    ps.wait()
+    
+    lines = safe_str(output).split('\\n')
+
     i = 0
-    while len([l for l in lines[i].split('  ') if l]) != 5:
+    while len([l for l in re.split(r" {2,}", lines[i]) if l]) != 5:
         i += 1
-    offsets = [lines[i].index(l) for l in lines[i].split('  ') if len(l)]
+    
     pkgs = {}
     for line in lines:
-        parsed = []
-        for i in range(len(offsets)):
-            if len(offsets) == i + 1:
-                parsed.append(line[offsets[i]:].strip())
-            else:
-                parsed.append(line[offsets[i]:offsets[i + 1]].strip())
-
-        if len(parsed[1]) > 0:
-            pkgs.update({parsed[1]:{'State':parsed[0], 'Version':parsed[2], 'Architecture':parsed[3],'Description':parsed[4]}})
+        parsed_line = re.split(r" {2,}", line)
+        if (len(parsed_line) == 5) and (len(parsed_line[1]) > 0):
+            pkgs.update({parsed_line[1]:{'State':parsed_line[0], 'Version':parsed_line[2], 'Architecture':parsed_line[3],'Description':parsed_line[4]}})
 
     json_output = json.dumps(pkgs)
 
