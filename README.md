@@ -8,11 +8,11 @@ Produces a JSON output form of the installed Debian packages list
 
 ## Usage
 
-`python dpkg_list_json.py > /path/to/output.json`
+`python3 dpkg_list_json.py > /path/to/output.json`
 
 ## Example
 
-`python dpkg_list_json.py > $(pwd)/example.json`
+`python3 dpkg_list_json.py > $(pwd)/example.json`
 
 
 See examples directory for sample output from a Raspberry Pi 3+
