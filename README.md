@@ -3,8 +3,8 @@ Produces a JSON output form of the installed Debian packages list
 
 ## Requirements:
 
-* Python 3.6+
-* An Ubuntu or Debian distribution of Linux
+* Python 3.4.3+
+* An Ubuntu or Debian distribution of Linux (for `dpkg`)
 
 ## Usage
 
