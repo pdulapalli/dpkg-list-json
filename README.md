@@ -6,14 +6,14 @@ Produces a JSON output form of the installed Debian packages list
 * Python 3.4.3+
 * An Ubuntu or Debian distribution of Linux (for `dpkg`)
 
-## Usage
+## Install
+    pip install dpkg_list_json
 
-`python3 dpkg_list_json.py > /path/to/output.json`
+## Usage
+    dpkg_list_json > /path/to/output.json
 
 ## Example
-
-`python3 dpkg_list_json.py > $(pwd)/example.json`
-
+    dpkg_list_json > $(pwd)/example.json
 
 See examples directory for sample output from a Raspberry Pi 3+
 
