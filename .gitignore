@@ -1,0 +1,16 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+.mypy_cache/
+venv
+.vscode
+*.egg-info/
+.idea/
+docs/_build
+docs/venv
+.tox
+build/
+dist/
+.DS_Store
+tmp_file
