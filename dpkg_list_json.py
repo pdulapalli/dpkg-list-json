@@ -33,22 +33,26 @@ def safe_str(obj):
         return obj.encode('ascii', 'ignore').decode('ascii')
     return ""
 
-def main():
+def generate_dpkg_json():
     ps = subprocess.Popen(('dpkg', '-l'), stdout=subprocess.PIPE)
     output = subprocess.check_output(('grep', '^ii'), stdin=ps.stdout)
     ps.wait()
-    
+
     lines = safe_str(output).split('\\n')
 
     i = 0
-    while len([l for l in re.split(r" {2,}", lines[i]) if l]) != 5:
+    while len([l for l in re.split(r" {1,}", lines[i]) if l]) != 5:
         i += 1
-    
+
     pkgs = {}
     for line in lines:
-        parsed_line = re.split(r" {2,}", line)
-        if (len(parsed_line) == 5) and (len(parsed_line[1]) > 0):
-            pkgs.update({parsed_line[1]:{'State':parsed_line[0], 'Version':parsed_line[2], 'Architecture':parsed_line[3],'Description':parsed_line[4]}})
+        parsed_line_core = re.split(r" {1,}", line)
+        if (len(parsed_line_core) >= 5) and (len(parsed_line_core[1]) > 0):
+            parsed_line_supplement = re.split(r" {2,}", line)
+            description = ''
+            if (len(parsed_line_supplement) > 0):
+                description = parsed_line_supplement[-1]
+            pkgs.update({parsed_line_core[1]:{'State':parsed_line_core[0], 'Version':parsed_line_core[2], 'Architecture':parsed_line_core[3],'Description':description}})
 
     json_output = json.dumps(pkgs)
 
@@ -57,4 +61,4 @@ def main():
     sys.exit(0)
 
 if __name__ == "__main__":
-    main()
+    generate_dpkg_json()
