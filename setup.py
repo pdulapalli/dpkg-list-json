@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
     name='dpkg_list_json',
-    version='0.0.1',
+    version='2.0.0',
     py_modules=['dpkg_list_json'],
     install_requires=[],
     entry_points={
